@@ -37,6 +37,8 @@ def extract_info(file_name, content):
       #
       for e in page.findall('./figure'):
         bbox = [float(x) for x in e.attrib['bbox'].split(',')]
+        if e.find('./curve') is None:
+            continue
         curve_pts = [float(x) for x in e.find('./curve').attrib['pts'].split(',')]
         baseline = curve_pts[1]
         current_chart = [curve_pts[1::2][int(len(curve_pts)/4):-1]][0]
