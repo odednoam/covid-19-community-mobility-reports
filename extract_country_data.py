@@ -1,3 +1,4 @@
+import subprocess
 import os
 import re
 import json
@@ -24,11 +25,9 @@ def extract_info(content):
 def read_files():
     data = []
     for f in os.listdir('./pdf/'):
-        os.system("pdf2txt.py -m 2 -o output.txt {}".format("./pdf/" + f))
-        content = open("output.txt").read()
-
+        proc = subprocess.Popen(['pdf2txt.py','-m', '2', "./pdf/" + f],stdout=subprocess.PIPE)
         print(f)
-        extracted_tags = extract_info(content)
+        extracted_tags = extract_info(proc.stdout.read())
         extracted_tags["file_name"] = f
         data.append(extracted_tags)
         print(extracted_tags)
